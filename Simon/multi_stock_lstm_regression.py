@@ -189,11 +189,17 @@ for ticker in tickers:
 
     # Daten für den Plot vorbereiten
     train_df = full_df[:training_data_len]
-    test_df = full_df[training_data_len:].copy()
-    test_df['Predictions'] = stock_predictions
+    valid_df = full_df[training_data_len:].copy()
+    valid_df['Predictions'] = stock_predictions
 
-    y_actual = test_df['Close'].values
-    y_predicted = test_df['Predictions'].values
+    # Wichtig: Metriken auf den tatsächlichen und vorhergesagten Werten berechnen
+    y_actual = valid_df['Close'].values
+    y_predicted = valid_df['Predictions'].values
+
+    # NaN-Werte entfernen, falls welche durch die Zuweisung entstanden sind
+    mask = ~np.isnan(y_predicted)
+    y_actual = y_actual[mask]
+    y_predicted = y_predicted[mask]
 
     mae = mean_absolute_error(y_actual, y_predicted)
     rmse = np.sqrt(mean_squared_error(y_actual, y_predicted))
@@ -212,8 +218,8 @@ for ticker in tickers:
     plt.ylabel('Preis in USD')
     # --- NEUE FARBEN ---
     plt.plot(train_df.index, train_df['Close'], label='Trainingsdaten (Tatsächlich)', color='dodgerblue', alpha=0.8)
-    plt.plot(test_df.index, test_df['Close'], color='darkorange', label='Testdaten (Tatsächlich)')
-    plt.plot(test_df.index, test_df['Predictions'], color='red', linestyle='--', label='Vorhergesagter Preis')
+    plt.plot(valid_df.index, valid_df['Close'], color='darkorange', label='Testdaten (Tatsächlich)')
+    plt.plot(valid_df.index, valid_df['Predictions'], color='red', linestyle='--', label='Vorhergesagter Preis')
     plt.legend()
     plt.savefig(f'Simon/plots/prediction_corrected_{ticker}.png')
     plt.show()
