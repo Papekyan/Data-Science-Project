@@ -21,7 +21,7 @@ This project implements an advanced machine learning approach to stock price pre
 
 ### 1. Data Collection & Preprocessing
 - **Stock Data**: Historical price data from Yahoo Finance (2010-2024)
-- **Sentiment Data**: Financial news sentiment scores from FNSPID dataset
+- **Sentiment Data**: Financial news sentiment scores from FNSPID dataset (https://huggingface.co/datasets/Zihan1004/FNSPID)
 - **Time Range**: January 1, 2010 to January 9, 2024 (aligned with Tesla's IPO)
 
 ### 2. Feature Engineering
